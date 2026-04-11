@@ -8,11 +8,11 @@ import {
     Layers,
     Mail,
     Sparkles,
-    Twitter,
     ChevronRight,
     Database,
     BrainCircuit,
-    Binary
+    Binary,
+    Network
 } from 'lucide-react';
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero';
 import Image from 'next/image';
@@ -34,29 +34,37 @@ const PORTFOLIO_DATA = {
     projects: [
         {
             title: "GymBro SaaS Platform",
+            category: "Software System",
             desc: "A comprehensive subscription-based gym management system featuring authentication, meal planning, and tutorial integration.",
-            tech: ["PHP", "MySQL", "JavaScript", "CSS"],
+            tech: ["PHP", "MySQL", "JavaScript", "HTML/CSS"],
+            icon: <Database className="w-8 h-8 opacity-80" />,
             github: "https://github.com/Mannankhan-sys",
             demo: "#"
         },
         {
-            title: "Sign Language Recognition",
+            title: "Gesture Recognition",
+            category: "Neural Net",
             desc: "AI-powered system developed for real-time alphabet and word gesture recognition using Python and Computer Vision.",
             tech: ["Python", "AI/ML", "OpenCV"],
+            icon: <BrainCircuit className="w-8 h-8 opacity-80" />,
             github: "https://github.com/Mannankhan-sys",
             demo: "#"
         },
         {
-            title: "Maze Solver Algorithm",
+            title: "Maze Solver Engine",
+            category: "Algorithms",
             desc: "High-performance maze solving program using graph traversal algorithms (DFS/BFS) and optimized data structures.",
-            tech: ["C++", "DSA", "Algorithms"],
+            tech: ["C++", "DSA", "Logic Optimization"],
+            icon: <Network className="w-8 h-8 opacity-80" />,
             github: "https://github.com/Mannankhan-sys",
             demo: "#"
         },
         {
-            title: "Library Management System",
+            title: "Library Management",
+            category: "Architecture",
             desc: "Object-oriented system designed to manage book records, users, and borrowing history with Java inheritance patterns.",
-            tech: ["Java", "OOP", "Swing"],
+            tech: ["Java", "OOP", "Swing GUI"],
+            icon: <Layers className="w-8 h-8 opacity-80" />,
             github: "https://github.com/Mannankhan-sys",
             demo: "#"
         }
@@ -70,65 +78,151 @@ const PORTFOLIO_DATA = {
 // --- INTERACTIVE STARS ---
 
 const StarBackground = () => {
-    const [stars, setStars] = useState<{ id: number; x: number; y: number; size: number; delay: number }[]>([]);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        const generatedStars = Array.from({ length: 180 }).map((_, i) => ({
-            id: i,
-            x: Math.random() * 100,
-            y: Math.random() * 100,
-            size: Math.random() * 2 + 0.5,
-            delay: Math.random() * 5
-        }));
-        setStars(generatedStars);
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        let particles: Particle[] = [];
+        const mouse = { x: null as number | null, y: null as number | null, radius: 150 };
 
         const handleMouseMove = (e: MouseEvent) => {
-            mouseX.set(e.clientX);
-            mouseY.set(e.clientY);
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        };
+
+        const handleMouseOut = () => {
+            mouse.x = null;
+            mouse.y = null;
+        };
+
+        const handleResize = () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initParticles();
         };
 
         window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, [mouseX, mouseY]);
+        window.addEventListener('mouseout', handleMouseOut);
+        window.addEventListener('resize', handleResize);
 
-    return (
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-black">
-            {stars.map((star) => (
-                <Star key={star.id} star={star} mouseX={mouseX} mouseY={mouseY} />
-            ))}
-        </div>
-    );
-};
+        class Particle {
+            x: number;
+            y: number;
+            size: number;
+            vx: number;
+            vy: number;
 
-const Star = ({ star, mouseX, mouseY }: { star: { x: number; y: number; size: number; delay: number }; mouseX: any; mouseY: any }) => {
-    // Dynamic parallax: stars follow the cursor with varying intensity
-    const x = useTransform(mouseX, [0, 2000], [0, (star.x - 50) * 0.5]);
-    const y = useTransform(mouseY, [0, 1200], [0, (star.y - 50) * 0.5]);
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+            }
 
-    return (
-        <motion.div
-            className="absolute rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-            style={{
-                left: `${star.x}%`,
-                top: `${star.y}%`,
-                width: star.size,
-                height: star.size,
-                x,
-                y,
-            }}
-            animate={{
-                opacity: [0.1, 0.9, 0.1],
-                scale: [0.8, 1.2, 0.8],
-            }}
-            transition={{
-                duration: 2 + Math.random() * 3,
-                repeat: Infinity,
-                delay: star.delay,
-            }}
-        />
-    );
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > height) this.vy = -this.vy;
+
+                if (mouse.x !== null && mouse.y !== null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distanceSq = dx * dx + dy * dy;
+                    if (distanceSq < mouse.radius * mouse.radius) {
+                        let distance = Math.sqrt(distanceSq);
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        this.x -= (dx / distance) * force * 1.5;
+                        this.y -= (dy / distance) * force * 1.5;
+                    }
+                }
+            }
+
+            draw() {
+                if(!ctx) return;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = Math.min(Math.floor((width * height) / 12000), 100);
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        let animationFrameId: number;
+
+        function animate() {
+            if(!ctx) return;
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a + 1; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let distanceSq = dx * dx + dy * dy;
+
+                    if (distanceSq < 15000) {
+                        let opacity = 1 - (distanceSq / 15000);
+                        // Using gold color #c5a059 for lines
+                        ctx.strokeStyle = `rgba(197, 160, 89, ${opacity * 0.3})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+
+                if (mouse.x !== null && mouse.y !== null) {
+                    let dxM = particles[a].x - mouse.x;
+                    let dyM = particles[a].y - mouse.y;
+                    let distanceMSq = dxM * dxM + dyM * dyM;
+                    if (distanceMSq < 20000) {
+                        let opacity = 1 - (distanceMSq / 20000);
+                        // Glowing white/gold for mouse connection
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.6})`;
+                        ctx.lineWidth = 1.2;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        initParticles();
+        animate();
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseout', handleMouseOut);
+            window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(animationFrameId);
+        };
+    }, []);
+
+    return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />;
 };
 
 const ContactForm = () => {
@@ -353,31 +447,35 @@ const PortfolioContent = () => {
                         {PORTFOLIO_DATA.projects.map((p, i) => (
                             <MarbleCard key={i} className="flex flex-col h-full text-black">
                                 <div className="flex-1">
-                                    <div className="flex gap-2 mb-10">
-                                        {p.tech.map((t, idx) => (
-                                            <span key={idx} className="text-[10px] font-mono px-3 py-1 rounded-full bg-neutral-200 text-neutral-600 font-bold uppercase">
-                                                {t}
-                                            </span>
-                                        ))}
+                                    <div className="flex items-center gap-4 mb-8 text-[#c5a059]">
+                                        {p.icon}
+                                        <span className="text-xs font-mono tracking-[0.2em] font-bold uppercase border border-[#c5a059] px-4 py-1.5 rounded-full">{p.category}</span>
                                     </div>
                                     <h4 className="text-3xl font-black mb-6 tracking-tight uppercase leading-[0.9]">
                                         {p.title.split(' ')[0]} <GoldText>{p.title.split(' ').slice(1).join(' ')}</GoldText>
                                     </h4>
-                                    <p className="text-neutral-600 text-base leading-relaxed mb-12 font-medium">
+                                    <p className="text-neutral-600 text-base leading-relaxed mb-8 font-medium">
                                         {p.desc}
                                     </p>
-                                </div>
-                                <div className="flex items-center justify-between pt-10 border-t border-neutral-200">
-                                    <div className="flex items-center gap-6">
-                                        <a href={p.github} className="text-neutral-400 hover:text-[#c5a059] transition-colors"><Github className="w-6 h-6" /></a>
-                                        <a href={p.demo} className="text-neutral-400 hover:text-[#c5a059] transition-colors"><ExternalLink className="w-6 h-6" /></a>
+                                    <div className="flex flex-wrap gap-2 mb-10">
+                                        {p.tech.map((t, idx) => (
+                                            <span key={idx} className="text-[10px] font-mono px-3 py-1.5 rounded-lg bg-neutral-100 text-neutral-600 font-bold uppercase shadow-sm border border-neutral-200">
+                                                {t}
+                                            </span>
+                                        ))}
                                     </div>
-                                    <button className="text-xs font-black flex items-center gap-2 hover:gap-4 transition-all tracking-widest text-black">
-                                        DECRYPT FILE <ChevronRight className="w-4 h-4 text-[#c5a059]" />
-                                    </button>
+                                </div>
+                                <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-neutral-200 gap-4">
+                                    <a href={p.demo} className="w-full sm:flex-1 text-center py-4 bg-black text-white hover:bg-[#c5a059] transition-colors rounded-xl text-xs font-black tracking-widest uppercase flex items-center justify-center gap-2 shadow-lg">
+                                        <ExternalLink className="w-4 h-4" /> Run Demo
+                                    </a>
+                                    <a href={p.github} className="w-full sm:flex-1 text-center py-4 bg-white border-2 border-neutral-100 text-black hover:border-[#c5a059] hover:bg-neutral-50 transition-colors rounded-xl text-xs font-black tracking-widest uppercase flex items-center justify-center gap-2">
+                                        <Github className="w-4 h-4" /> Core Source
+                                    </a>
                                 </div>
                             </MarbleCard>
                         ))}
+
                     </div>
                 </section>
 
