@@ -1,0 +1,40 @@
+# Technical Learning Guide: Portfolio Development
+
+This guide breaks down exactly how your portfolio was built so you can explain it to another AI or learn the concepts yourself.
+
+## 🛠️ Technology Stack
+- **Framework**: [Next.js 15](https://nextjs.org/) (React framework for production)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (Static typing for JavaScript)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) (Utility-first CSS)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) (A powerful library for React animations)
+- **Icons**: [Lucide React](https://lucide.dev/) (Beautifully simple icons)
+- **Components**: [shadcn/ui](https://ui.shadcn.com/) (Accessible and customizable components)
+
+## 🏗️ Core Architecture Concepts
+
+### 1. The "Blackhole" Transition ([scroll-expansion-hero.tsx](file:///c:/MyWorks/Antigravity/scroll-expansion-hero/src/components/ui/scroll-expansion-hero.tsx))
+This is the heart of the experience. It uses **Interpolation** (mapping scroll distance to visual properties like scale and opacity).
+- **Progress Tracking**: We use a `scrollProgress` state (0 to 1).
+- **Math**: `portalScale = 0.02 + scrollProgress * 0.98`. This makes the "hole" grow from 2% to 100% of the screen.
+- **Event Handlers**: We listen to `wheel` and `touchmove` events to update progress.
+
+### 2. The Portfolio Content ([demo.tsx](file:///c:/MyWorks/Antigravity/scroll-expansion-hero/src/components/blocks/demo.tsx))
+- **Data Driven**: All content is stored in a `PORTFOLIO_DATA` object. This makes it easy to update without touching the layout code.
+- **Glassmorphism & Texture**: We use semi-transparent white backgrounds with a subtle marble texture overlay for that premium feel.
+
+### 3. The Cyclic Reset
+- When the internal container scrolls to the very bottom, it checks if a "hard scroll" (stronger flick) happens.
+- If true, it resets `scrollProgress` to 0, "collapsing" the portal and returning you to the Hero image.
+
+## 🚀 How to Make It Live (Free Hosting)
+
+The best way to host this for free is **Vercel** (the creators of Next.js).
+
+1. **GitHub**: Push your code to a GitHub repository.
+2. **Vercel**: Visit [vercel.com](https://vercel.com/), sign in with GitHub, and click "Add New Project".
+3. **Import**: Select your repository and click "Deploy".
+4. **Result**: You'll get a free `your-project.vercel.app` link to share!
+
+## 💡 AI Chatbot Prompt (To learn more)
+Paste this into a chatbot:
+> "I have a Next.js 15 project using Framer Motion for a scroll-triggered expansion transition. The code uses `useEffect` to listen for wheel events and maps `deltaY` to a `scrollProgress` state (0-1). Can you explain how this manual scroll interpolation works compared to standard CSS scrolling, and how I can optimize the performance using `useTransform` from Framer Motion?"
