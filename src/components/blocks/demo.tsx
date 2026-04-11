@@ -371,7 +371,7 @@ const PortfolioContent = () => {
             {/* Galaxy Background revealed inside the portal */}
             <div className="fixed inset-0 z-0 pointer-events-none bg-black">
                 <Image
-                    src="/hero-bg.jpg"
+                    src="/ultra-hd-cosmos.png"
                     alt="Galaxy Void"
                     fill
                     className="object-cover opacity-90 brightness-75 scale-110"
