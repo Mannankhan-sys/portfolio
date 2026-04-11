@@ -249,32 +249,32 @@ const ContactForm = () => {
     };
 
     return (
-        <MarbleCard className="max-w-4xl mx-auto mb-40 text-black">
+        <MarbleCard className="max-w-xl mx-auto mb-20 text-black p-6 md:p-8">
             <div className="relative">
-                <h3 className="text-4xl font-black mb-2 uppercase tracking-tighter">Initiate Contact</h3>
-                <p className="text-[10px] font-mono text-neutral-400 mb-10 uppercase tracking-[0.3em]">Direct Neural Link established</p>
+                <h3 className="text-3xl font-black mb-2 uppercase tracking-tighter">Initiate Contact</h3>
+                <p className="text-[10px] font-mono text-neutral-400 mb-8 uppercase tracking-[0.3em]">Direct Neural Link established</p>
                 
-                <form ref={formRef} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-8">
+                <form ref={formRef} className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 font-bold">Protocol Name</label>
-                            <input name="name" type="text" placeholder="GUEST_IDENTITY" className="w-full bg-neutral-50 border-2 border-neutral-100 rounded-xl px-6 py-4 outline-none focus:border-[#c5a059] transition-all font-medium" />
+                            <input name="name" type="text" placeholder="GUEST_IDENTITY" className="w-full bg-neutral-50 border-2 border-neutral-100 rounded-lg px-4 py-3 text-sm outline-none focus:border-[#c5a059] transition-all font-medium" />
                         </div>
                         <div className="space-y-2">
                             <label className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 font-bold">Return Address</label>
-                            <input name="email" type="email" placeholder="COMM_CHANNEL@HOST.COM" className="w-full bg-neutral-50 border-2 border-neutral-100 rounded-xl px-6 py-4 outline-none focus:border-[#c5a059] transition-all font-medium" />
+                            <input name="email" type="email" placeholder="COMM_CHANNEL@HOST.COM" className="w-full bg-neutral-50 border-2 border-neutral-100 rounded-lg px-4 py-3 text-sm outline-none focus:border-[#c5a059] transition-all font-medium" />
                         </div>
                     </div>
                     <div className="space-y-2">
                         <label className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 font-bold">Transmitted Data</label>
-                        <textarea name="message" rows={5} placeholder="ENTER_MESSAGE_ENCRYPTION..." className="w-full bg-neutral-50 border-2 border-neutral-100 rounded-xl px-6 py-4 outline-none focus:border-[#c5a059] transition-all font-medium resize-none" />
+                        <textarea name="message" rows={4} placeholder="ENTER_MESSAGE_ENCRYPTION..." className="w-full bg-neutral-50 border-2 border-neutral-100 rounded-lg px-4 py-3 text-sm outline-none focus:border-[#c5a059] transition-all font-medium resize-none" />
                     </div>
-                    <div className="flex flex-col md:flex-row gap-4 pt-6">
-                        <button onClick={handleEmail} type="button" className="flex-1 bg-black text-white px-8 py-5 rounded-xl font-black uppercase tracking-widest hover:bg-[#c5a059] transition-all flex items-center justify-center gap-4 group">
-                            <Mail className="w-6 h-6 group-hover:scale-110 transition-transform" /> Finalize via Mail
+                    <div className="flex flex-col md:flex-row gap-3 pt-4">
+                        <button onClick={handleEmail} type="button" className="flex-1 bg-black text-white px-4 py-3 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-[#c5a059] transition-all flex items-center justify-center gap-2 group">
+                            <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" /> Finalize via Mail
                         </button>
-                        <button onClick={handleWhatsApp} type="button" className="flex-1 bg-neutral-100 text-black px-8 py-5 rounded-xl font-black uppercase tracking-widest hover:bg-neutral-200 transition-all flex items-center justify-center gap-4 group shadow-sm">
-                            <ExternalLink className="w-6 h-6 group-hover:scale-110 transition-transform" /> WhatsApp Stream
+                        <button onClick={handleWhatsApp} type="button" className="flex-1 bg-neutral-100 text-black px-4 py-3 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-neutral-200 transition-all flex items-center justify-center gap-2 group shadow-sm border border-neutral-200">
+                            <ExternalLink className="w-4 h-4 group-hover:scale-110 transition-transform" /> WhatsApp Stream
                         </button>
                     </div>
                 </form>
@@ -371,7 +371,7 @@ const PortfolioContent = () => {
             {/* Galaxy Background revealed inside the portal */}
             <div className="fixed inset-0 z-0 pointer-events-none bg-black">
                 <Image
-                    src="/ultra-hd-cosmos.png"
+                    src="/hero-bg.jpg"
                     alt="Galaxy Void"
                     fill
                     className="object-cover opacity-90 brightness-75 scale-110"
@@ -504,8 +504,8 @@ const PortfolioDemo = () => {
         <div className="min-h-screen bg-black">
             <ScrollExpandMedia
                 mediaType="image"
-                mediaSrc="/hero-bg.jpg"
-                bgImageSrc="/hero-bg.jpg"
+                mediaSrc="/galaxy-bg-hd.png"
+                bgImageSrc="/galaxy-bg-hd.png"
                 title="THE CREATION"
                 subtitle="Symmetry of intelligence"
                 scrollToExpand="Dive into the void"
