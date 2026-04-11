@@ -504,8 +504,8 @@ const PortfolioDemo = () => {
         <div className="min-h-screen bg-black">
             <ScrollExpandMedia
                 mediaType="image"
-                mediaSrc="/galaxy-bg-hd.png"
-                bgImageSrc="/galaxy-bg-hd.png"
+                mediaSrc="/galaxy-bg-hd.jpg"
+                bgImageSrc="/galaxy-bg-hd.jpg"
                 title="THE CREATION"
                 subtitle="Symmetry of intelligence"
                 scrollToExpand="Dive into the void"
