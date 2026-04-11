@@ -371,7 +371,7 @@ const PortfolioContent = () => {
             {/* Galaxy Background revealed inside the portal */}
             <div className="fixed inset-0 z-0 pointer-events-none bg-black">
                 <Image
-                    src="/galaxy-bg-hd.png"
+                    src="/ultra-hd-cosmos.png"
                     alt="Galaxy Void"
                     fill
                     className="object-cover opacity-90 brightness-75 scale-110"
@@ -443,34 +443,34 @@ const PortfolioContent = () => {
                         </div>
                     </div>
 
-                    <div className="grid lg:grid-cols-2 gap-12">
+                    <div className="grid lg:grid-cols-2 gap-16">
                         {PORTFOLIO_DATA.projects.map((p, i) => (
-                            <MarbleCard key={i} className="flex flex-col h-full text-black">
+                            <MarbleCard key={i} className="flex flex-col h-full text-black p-10 md:p-12">
                                 <div className="flex-1">
                                     <div className="flex items-center gap-4 mb-8 text-[#c5a059]">
                                         {p.icon}
-                                        <span className="text-xs font-mono tracking-[0.2em] font-bold uppercase border border-[#c5a059] px-4 py-1.5 rounded-full">{p.category}</span>
+                                        <span className="text-sm font-mono tracking-[0.2em] font-bold uppercase border border-[#c5a059] px-4 py-1.5 rounded-full">{p.category}</span>
                                     </div>
-                                    <h4 className="text-3xl font-black mb-6 tracking-tight uppercase leading-[0.9]">
+                                    <h4 className="text-4xl lg:text-5xl font-black mb-8 tracking-tight uppercase leading-none">
                                         {p.title.split(' ')[0]} <GoldText>{p.title.split(' ').slice(1).join(' ')}</GoldText>
                                     </h4>
-                                    <p className="text-neutral-600 text-base leading-relaxed mb-8 font-medium">
+                                    <p className="text-neutral-600 text-lg lg:text-xl leading-relaxed mb-10 font-medium">
                                         {p.desc}
                                     </p>
-                                    <div className="flex flex-wrap gap-2 mb-10">
+                                    <div className="flex flex-wrap gap-3 mb-12">
                                         {p.tech.map((t, idx) => (
-                                            <span key={idx} className="text-[10px] font-mono px-3 py-1.5 rounded-lg bg-neutral-100 text-neutral-600 font-bold uppercase shadow-sm border border-neutral-200">
+                                            <span key={idx} className="text-xs font-mono px-4 py-2 rounded-lg bg-neutral-100 text-neutral-600 font-bold uppercase shadow-sm border border-neutral-200">
                                                 {t}
                                             </span>
                                         ))}
                                     </div>
                                 </div>
-                                <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-neutral-200 gap-4">
-                                    <a href={p.demo} className="w-full sm:flex-1 text-center py-4 bg-black text-white hover:bg-[#c5a059] transition-colors rounded-xl text-xs font-black tracking-widest uppercase flex items-center justify-center gap-2 shadow-lg">
-                                        <ExternalLink className="w-4 h-4" /> Run Demo
+                                <div className="flex flex-col sm:flex-row items-center justify-between pt-10 border-t border-neutral-200 gap-6">
+                                    <a href={p.demo} className="w-full sm:flex-1 text-center py-5 bg-black text-white hover:bg-[#c5a059] transition-colors rounded-xl text-sm font-black tracking-widest uppercase flex items-center justify-center gap-3 shadow-lg">
+                                        <ExternalLink className="w-5 h-5" /> Run Demo
                                     </a>
-                                    <a href={p.github} className="w-full sm:flex-1 text-center py-4 bg-white border-2 border-neutral-100 text-black hover:border-[#c5a059] hover:bg-neutral-50 transition-colors rounded-xl text-xs font-black tracking-widest uppercase flex items-center justify-center gap-2">
-                                        <Github className="w-4 h-4" /> Core Source
+                                    <a href={p.github} className="w-full sm:flex-1 text-center py-5 bg-white border-2 border-neutral-100 text-black hover:border-[#c5a059] hover:bg-neutral-50 transition-colors rounded-xl text-sm font-black tracking-widest uppercase flex items-center justify-center gap-3 shadow-md">
+                                        <Github className="w-5 h-5" /> Core Source
                                     </a>
                                 </div>
                             </MarbleCard>
