@@ -23,7 +23,7 @@ const PORTFOLIO_DATA = {
     profile: {
         name: "Muhammand Abdul Mannan",
         role: "Software Engineer & AI Researcher",
-        description: "Software Engineering student at National University of Modern Languages. Passionate about architecting intelligent systems, data-driven optimization, and research-oriented problem solving.",
+        description: "Software Engineer. Passionate about architecting intelligent systems, data-driven optimization, and research-oriented problem solving.",
         image: "/profile.png"
     },
     capabilities: [
@@ -75,11 +75,11 @@ const StarBackground = () => {
     const mouseY = useMotionValue(0);
 
     useEffect(() => {
-        const generatedStars = Array.from({ length: 150 }).map((_, i) => ({
+        const generatedStars = Array.from({ length: 180 }).map((_, i) => ({
             id: i,
             x: Math.random() * 100,
             y: Math.random() * 100,
-            size: Math.random() * 2 + 1,
+            size: Math.random() * 2 + 0.5,
             delay: Math.random() * 5
         }));
         setStars(generatedStars);
@@ -94,7 +94,7 @@ const StarBackground = () => {
     }, [mouseX, mouseY]);
 
     return (
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-black">
             {stars.map((star) => (
                 <Star key={star.id} star={star} mouseX={mouseX} mouseY={mouseY} />
             ))}
@@ -103,31 +103,89 @@ const StarBackground = () => {
 };
 
 const Star = ({ star, mouseX, mouseY }: { star: { x: number; y: number; size: number; delay: number }; mouseX: any; mouseY: any }) => {
-    // Parallax effect: stars move slightly away from cursor
-    const x = useTransform(mouseX, [0, 2000], [star.x - 1, star.x + 1]);
-    const y = useTransform(mouseY, [0, 1200], [star.y - 1, star.y + 1]);
+    // Dynamic parallax: stars follow the cursor with varying intensity
+    const x = useTransform(mouseX, [0, 2000], [0, (star.x - 50) * 0.5]);
+    const y = useTransform(mouseY, [0, 1200], [0, (star.y - 50) * 0.5]);
 
     return (
         <motion.div
-            className="absolute rounded-full bg-white/60"
+            className="absolute rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"
             style={{
                 left: `${star.x}%`,
                 top: `${star.y}%`,
                 width: star.size,
                 height: star.size,
-                translateX: x,
-                translateY: y,
+                x,
+                y,
             }}
             animate={{
-                opacity: [0.2, 0.8, 0.2],
-                scale: [1, 1.5, 1],
+                opacity: [0.1, 0.9, 0.1],
+                scale: [0.8, 1.2, 0.8],
             }}
             transition={{
-                duration: Math.random() * 3 + 2,
+                duration: 2 + Math.random() * 3,
                 repeat: Infinity,
                 delay: star.delay,
             }}
         />
+    );
+};
+
+const ContactForm = () => {
+    const [status, setStatus] = useState<string>('');
+    const formRef = useRef<HTMLFormElement>(null);
+
+    const handleEmail = () => {
+        if (!formRef.current) return;
+        const formData = new FormData(formRef.current);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const message = formData.get('message');
+        const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0AMessage: ${message}`;
+        window.location.href = `mailto:muhammadabdulm64@gmail.com?subject=Portfolio Inquiry from ${name}&body=${body}`;
+    };
+
+    const handleWhatsApp = () => {
+        if (!formRef.current) return;
+        const formData = new FormData(formRef.current);
+        const name = formData.get('name');
+        const message = formData.get('message');
+        const text = `Hi Abdul Mannan, my name is ${name}. %0A%0A${message}`;
+        window.open(`https://wa.me/923000000000?text=${text}`, '_blank'); // Replace with real number
+    };
+
+    return (
+        <MarbleCard className="max-w-4xl mx-auto mb-40 text-black">
+            <div className="relative">
+                <h3 className="text-4xl font-black mb-2 uppercase tracking-tighter">Initiate Contact</h3>
+                <p className="text-[10px] font-mono text-neutral-400 mb-10 uppercase tracking-[0.3em]">Direct Neural Link established</p>
+                
+                <form ref={formRef} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 font-bold">Protocol Name</label>
+                            <input name="name" type="text" placeholder="GUEST_IDENTITY" className="w-full bg-neutral-50 border-2 border-neutral-100 rounded-xl px-6 py-4 outline-none focus:border-[#c5a059] transition-all font-medium" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 font-bold">Return Address</label>
+                            <input name="email" type="email" placeholder="COMM_CHANNEL@HOST.COM" className="w-full bg-neutral-50 border-2 border-neutral-100 rounded-xl px-6 py-4 outline-none focus:border-[#c5a059] transition-all font-medium" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 font-bold">Transmitted Data</label>
+                        <textarea name="message" rows={5} placeholder="ENTER_MESSAGE_ENCRYPTION..." className="w-full bg-neutral-50 border-2 border-neutral-100 rounded-xl px-6 py-4 outline-none focus:border-[#c5a059] transition-all font-medium resize-none" />
+                    </div>
+                    <div className="flex flex-col md:flex-row gap-4 pt-6">
+                        <button onClick={handleEmail} type="button" className="flex-1 bg-black text-white px-8 py-5 rounded-xl font-black uppercase tracking-widest hover:bg-[#c5a059] transition-all flex items-center justify-center gap-4 group">
+                            <Mail className="w-6 h-6 group-hover:scale-110 transition-transform" /> Finalize via Mail
+                        </button>
+                        <button onClick={handleWhatsApp} type="button" className="flex-1 bg-neutral-100 text-black px-8 py-5 rounded-xl font-black uppercase tracking-widest hover:bg-neutral-200 transition-all flex items-center justify-center gap-4 group shadow-sm">
+                            <ExternalLink className="w-6 h-6 group-hover:scale-110 transition-transform" /> WhatsApp Stream
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </MarbleCard>
     );
 };
 
@@ -140,12 +198,12 @@ const GoldText = ({ children, className = "" }: { children: React.ReactNode, cla
 );
 
 const MarbleCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-    <motion.div 
-        animate={{ 
+    <motion.div
+        animate={{
             y: [0, -10, 0],
             rotateZ: [0, 0.5, 0, -0.5, 0]
         }}
-        transition={{ 
+        transition={{
             duration: 6 + Math.random() * 4,
             repeat: Infinity,
             ease: "easeInOut"
@@ -166,12 +224,12 @@ const BusinessCard = () => (
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="max-w-xl mx-auto mt-20 mb-32"
     >
-        <motion.div 
-            animate={{ 
+        <motion.div
+            animate={{
                 y: [0, -15, 0],
                 rotateZ: [0, -1, 0, 1, 0]
             }}
-            transition={{ 
+            transition={{
                 duration: 8,
                 repeat: Infinity,
                 ease: "easeInOut"
@@ -205,7 +263,7 @@ const BusinessCard = () => (
                 </div>
 
                 <div className="md:text-right flex flex-col justify-end">
-                    <p className="text-[10px] font-mono text-neutral-300 uppercase tracking-[0.4em] mb-2 font-bold italic underline decoration-[#c5a059]">NUML_DOMAIN</p>
+                    <p className="text-[10px] font-mono text-neutral-300 uppercase tracking-[0.4em] mb-2 font-bold italic underline decoration-[#c5a059]"></p>
                     <p className="text-xs font-black tracking-widest text-[#c5a059]">© 2026 ARCHITECT</p>
                 </div>
             </div>
@@ -217,14 +275,14 @@ const PortfolioContent = () => {
     return (
         <div className="w-full relative overflow-hidden bg-transparent text-white font-sans">
             {/* Galaxy Background revealed inside the portal */}
-            <div className="fixed inset-0 z-0 pointer-events-none">
+            <div className="fixed inset-0 z-0 pointer-events-none bg-black">
                 <Image
-                    src="/galaxy-bg.jpg"
+                    src="/galaxy-bg-hd.png"
                     alt="Galaxy Void"
                     fill
-                    className="object-cover opacity-80"
+                    className="object-cover opacity-90 brightness-75 scale-110"
                 />
-                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
                 <StarBackground />
             </div>
 
@@ -281,7 +339,7 @@ const PortfolioContent = () => {
                     <div className="flex items-end justify-between mb-20 border-b border-white/10 pb-12">
                         <div>
                             <h3 className="text-xs font-mono text-[#c5a059] uppercase tracking-[0.5em] mb-4 font-bold">Scientific Repository</h3>
-                            <h4 className="text-5xl md:text-7xl font-black tracking-tighter text-white">NEURAL_WORKS</h4>
+                            <h4 className="text-5xl md:text-7xl font-black tracking-tighter text-white">NEURAL WORKS</h4>
                         </div>
                         <div className="hidden md:flex gap-4">
                             <div className="text-right">
@@ -325,6 +383,7 @@ const PortfolioContent = () => {
 
                 <section className="text-center mb-10">
                     <h3 className="text-xs font-mono text-[#c5a059] uppercase tracking-[0.5em] mb-12 font-bold italic underline">Contact Identity</h3>
+                    <ContactForm />
                     <BusinessCard />
                 </section>
 
@@ -347,8 +406,8 @@ const PortfolioDemo = () => {
         <div className="min-h-screen bg-black">
             <ScrollExpandMedia
                 mediaType="image"
-                mediaSrc="/hero-bg.jpg"
-                bgImageSrc="/hero-bg.jpg"
+                mediaSrc="/hero-bg-hd.png"
+                bgImageSrc="/hero-bg-hd.png"
                 title="THE CREATION"
                 subtitle="Symmetry of intelligence"
                 scrollToExpand="Dive into the void"
