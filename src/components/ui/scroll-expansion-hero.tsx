@@ -41,8 +41,8 @@ const ScrollExpandMedia = ({
 
     const rawProgress = useMotionValue(0);
     const smoothProgress = useSpring(rawProgress, {
-        stiffness: 100,
-        damping: 30,
+        stiffness: 80,
+        damping: 25,
         restDelta: 0.001
     });
 
@@ -129,11 +129,13 @@ const ScrollExpandMedia = ({
         };
     }, [isFullyExpanded, touchStartY, rawProgress]);
 
-    const portalScale = useTransform(smoothProgress, [0, 1], [0.02, 1]);
-    const portalBorderRadius = useTransform(smoothProgress, [0.8, 1], ["50%", "0%"]);
-    const bgOpacity = useTransform(smoothProgress, [0, 0.7], [1, 0]);
-    const contentOpacity = useTransform(smoothProgress, [0.7, 1], [0, 1]);
-    const contentScale = useTransform(smoothProgress, [0, 1], [0.8, 1]);
+    const portalClip = useTransform(smoothProgress, [0, 1], [
+        `circle(8% at ${portalX}% ${portalY}%)`,
+        `circle(150% at ${portalX}% ${portalY}%)`
+    ]);
+    const bgOpacity = useTransform(smoothProgress, [0, 0.5], [1, 0]);
+    const contentOpacity = useTransform(smoothProgress, [0.1, 1], [0.3, 1]);
+    const contentScale = useTransform(smoothProgress, [0, 1], [0.95, 1]);
 
     return (
         <div ref={sectionRef} className="relative min-h-screen bg-black overflow-hidden select-none">
@@ -142,23 +144,12 @@ const ScrollExpandMedia = ({
                 <motion.div
                     style={{
                         position: 'absolute',
-                        left: isFullyExpanded ? '0%' : `${portalX}%`,
-                        top: isFullyExpanded ? '0%' : `${portalY}%`,
-                        x: isFullyExpanded ? 0 : '-50%',
-                        y: isFullyExpanded ? 0 : '-50%',
-                        width: isFullyExpanded ? '100vw' : portalScale.get() * 100 + 'vw',
-                        height: isFullyExpanded ? '100vh' : portalScale.get() * 100 + 'vh',
-                        borderRadius: portalBorderRadius,
-                        overflow: 'hidden',
+                        inset: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        clipPath: portalClip,
                         pointerEvents: isFullyExpanded ? 'auto' : 'none',
                     }}
-                    animate={{
-                        width: isFullyExpanded ? '100vw' : portalScale.get() * 100 + 'vw',
-                        height: isFullyExpanded ? '100vh' : portalScale.get() * 100 + 'vh',
-                        left: isFullyExpanded ? '0%' : `${portalX}%`,
-                        top: isFullyExpanded ? '0%' : `${portalY}%`,
-                    }}
-                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
                     className="bg-black"
                 >
                     <motion.div
