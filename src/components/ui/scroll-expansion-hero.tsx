@@ -65,9 +65,8 @@ const ScrollExpandMedia = ({
             if (isFullyExpanded) {
                 const contentContainer = sectionRef.current?.querySelector('.overflow-y-auto');
                 if (contentContainer) {
-                    const isAtBottom = contentContainer.scrollHeight - contentContainer.scrollTop <= contentContainer.clientHeight + 2;
-                    if (isAtBottom && e.deltaY > 100) {
-                        contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                    const isAtTop = contentContainer.scrollTop <= 0;
+                    if (isAtTop && e.deltaY < -50) {
                         rawProgress.set(0);
                         setIsFullyExpanded(false);
                         return;
@@ -93,9 +92,8 @@ const ScrollExpandMedia = ({
             if (isFullyExpanded) {
                 const contentContainer = sectionRef.current?.querySelector('.overflow-y-auto');
                 if (contentContainer) {
-                    const isAtBottom = contentContainer.scrollHeight - contentContainer.scrollTop <= contentContainer.clientHeight + 2;
-                    if (isAtBottom && deltaY > 100) {
-                        contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                    const isAtTop = contentContainer.scrollTop <= 0;
+                    if (isAtTop && deltaY < -50) {
                         rawProgress.set(0);
                         setIsFullyExpanded(false);
                         return;
