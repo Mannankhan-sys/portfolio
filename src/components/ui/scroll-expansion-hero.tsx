@@ -128,7 +128,7 @@ const ScrollExpandMedia = ({
     }, [isFullyExpanded, touchStartY, rawProgress]);
 
     const portalClip = useTransform(smoothProgress, [0, 1], [
-        `circle(3% at ${portalX}% ${portalY}%)`,
+        `circle(1% at ${portalX}% ${portalY}%)`,
         `circle(150% at ${portalX}% ${portalY}%)`
     ]);
     const bgOpacity = useTransform(smoothProgress, [0, 0.5], [1, 0]);

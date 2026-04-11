@@ -479,21 +479,11 @@ const PortfolioContent = () => {
                     </div>
                 </section>
 
-                <section className="text-center mb-10">
+                <section className="text-center mb-10 pb-20">
                     <h3 className="text-xs font-mono text-[#c5a059] uppercase tracking-[0.5em] mb-12 font-bold italic underline">Contact Identity</h3>
                     <ContactForm />
                     <BusinessCard />
                 </section>
-
-                <div className="text-center pb-20 opacity-40">
-                    <motion.p
-                        animate={{ opacity: [0.4, 1, 0.4] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="text-[10px] font-mono uppercase tracking-[0.8em]"
-                    >
-                        Deliberate scroll to return to initial sequence
-                    </motion.p>
-                </div>
             </div>
         </div>
     );
