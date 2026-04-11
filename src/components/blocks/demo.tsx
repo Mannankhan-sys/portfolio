@@ -291,18 +291,24 @@ const GoldText = ({ children, className = "" }: { children: React.ReactNode, cla
     </span>
 );
 
-const MarbleCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+const MarbleCard = ({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => (
     <motion.div
+        style={{ transformPerspective: 1200 }}
         animate={{
-            y: [0, -10, 0],
-            rotateZ: [0, 0.5, 0, -0.5, 0]
+            y: [0, -15, 5, -10, 0],
+            x: [0, 8, -5, 5, 0],
+            rotateX: [0, 3, -2, 2, 0],
+            rotateY: [0, -3, 2, -2, 0],
+            rotateZ: [0, 1.5, -1, 1, 0]
         }}
         transition={{
-            duration: 6 + Math.random() * 4,
+            duration: 18,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: "easeInOut",
+            delay: delay,
+            times: [0, 0.25, 0.5, 0.75, 1]
         }}
-        className={`relative group p-8 rounded-[1.5rem] bg-white border-4 border-[#e9e9e9] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden transition-all duration-500 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5)] hover:-translate-y-2 ${className}`}>
+        className={`relative group p-8 rounded-[1.5rem] bg-white border-4 border-[#e9e9e9] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden transition-all duration-500 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5)] hover:-translate-y-2 hover:rotate-0 ${className}`}>
         {/* Marble Texture Overlay */}
         <div className="absolute inset-0 opacity-[0.08] pointer-events-none mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/marble-rough.png')]" />
         {/* Decorative Gold Corner */}
@@ -319,16 +325,21 @@ const BusinessCard = () => (
         className="max-w-xl mx-auto mt-20 mb-32"
     >
         <motion.div
+            style={{ transformPerspective: 1200 }}
             animate={{
-                y: [0, -15, 0],
-                rotateZ: [0, -1, 0, 1, 0]
+                y: [0, -20, 10, -5, 0],
+                x: [0, -8, 5, -5, 0],
+                rotateX: [0, -3, 2, -1, 0],
+                rotateY: [0, 4, -2, 2, 0],
+                rotateZ: [0, -1, 1, -0.5, 0]
             }}
             transition={{
-                duration: 8,
+                duration: 22,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: "easeInOut",
+                times: [0, 0.25, 0.5, 0.75, 1]
             }}
-            className="relative p-10 rounded-xl bg-white border-[6px] border-[#e9e9e9] shadow-2xl overflow-hidden text-black"
+            className="relative p-10 rounded-xl bg-white border-[6px] border-[#e9e9e9] shadow-2xl overflow-hidden text-black hover:rotate-0 transition-transform duration-700"
         >
             <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/marble-rough.png')]" />
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#f5e0a3] via-[#c5a059] to-[#8a6e2f]" />
@@ -418,7 +429,7 @@ const PortfolioContent = () => {
                 {/* Capabilities Grid */}
                 <section className="mb-40 grid md:grid-cols-3 gap-8">
                     {PORTFOLIO_DATA.capabilities.map((c, i) => (
-                        <MarbleCard key={i} className="text-black">
+                        <MarbleCard key={i} delay={i * 2} className="text-black">
                             <div className="bg-neutral-100 rounded-2xl w-14 h-14 flex items-center justify-center mb-8 shadow-inner border border-neutral-200 text-[#c5a059]">
                                 {c.icon}
                             </div>
@@ -445,7 +456,7 @@ const PortfolioContent = () => {
 
                     <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
                         {PORTFOLIO_DATA.projects.map((p, i) => (
-                            <MarbleCard key={i} className="flex flex-col h-full text-black p-8 md:p-10">
+                            <MarbleCard key={i} delay={i * 2.5} className="flex flex-col h-full text-black p-8 md:p-10">
                                 <div className="flex-1">
                                     <div className="flex items-center gap-3 mb-6 text-[#c5a059]">
                                         {p.icon}
