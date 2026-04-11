@@ -67,9 +67,9 @@ const ScrollExpandMedia = ({
                 if (contentContainer) {
                     const isAtBottom = contentContainer.scrollHeight - contentContainer.scrollTop <= contentContainer.clientHeight + 2;
                     if (isAtBottom && e.deltaY > 100) {
+                        contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
                         rawProgress.set(0);
                         setIsFullyExpanded(false);
-                        window.scrollTo(0, 0);
                         return;
                     }
                 }
@@ -95,9 +95,9 @@ const ScrollExpandMedia = ({
                 if (contentContainer) {
                     const isAtBottom = contentContainer.scrollHeight - contentContainer.scrollTop <= contentContainer.clientHeight + 2;
                     if (isAtBottom && deltaY > 100) {
+                        contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
                         rawProgress.set(0);
                         setIsFullyExpanded(false);
-                        window.scrollTo(0, 0);
                         return;
                     }
                 }
@@ -130,7 +130,7 @@ const ScrollExpandMedia = ({
     }, [isFullyExpanded, touchStartY, rawProgress]);
 
     const portalClip = useTransform(smoothProgress, [0, 1], [
-        `circle(8% at ${portalX}% ${portalY}%)`,
+        `circle(3% at ${portalX}% ${portalY}%)`,
         `circle(150% at ${portalX}% ${portalY}%)`
     ]);
     const bgOpacity = useTransform(smoothProgress, [0, 0.5], [1, 0]);
@@ -178,7 +178,7 @@ const ScrollExpandMedia = ({
                             />
                         )}
 
-                        <div className={`absolute inset-0 z-10 ${isFullyExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+                        <div className="absolute inset-0 z-10 overflow-y-auto overflow-x-hidden scroll-smooth">
                             {children}
                         </div>
                     </motion.div>
